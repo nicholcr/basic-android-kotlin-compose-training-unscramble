@@ -16,6 +16,7 @@
 package com.example.unscramble.ui
 
 import android.app.Activity
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -117,8 +118,13 @@ fun GameScreen(
                 )
             }
 
+            val context = LocalContext.current
+            val text = stringResource(R.string.correct_word, gameViewModel.currentWord)
             OutlinedButton(
-                onClick = { gameViewModel.skipWord() },
+                onClick = {
+                    Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+                    gameViewModel.skipWord()
+                          },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
@@ -129,6 +135,13 @@ fun GameScreen(
         }
 
         GameStatus(score = gameUiState.score, modifier = Modifier.padding(20.dp))
+    }
+
+    if (gameUiState.isGameOver) {
+        FinalScoreDialog(
+            score = gameUiState.score,
+            onPlayAgain = { gameViewModel.resetGame() }
+        )
     }
 }
 

@@ -24,6 +24,7 @@
     <string name="enter_your_word">Enter your word</string>
     <string name="congratulations">Congratulations!</string>
     <string name="you_scored">"You scored: %d"</string>
+    <string name="correct_word">"The correct word was: %1$s"</string>
     <string name="exit">Exit</string>
     <string name="play_again">Play Again</string>
     <string name="wrong_guess">Wrong Guess!</string>
