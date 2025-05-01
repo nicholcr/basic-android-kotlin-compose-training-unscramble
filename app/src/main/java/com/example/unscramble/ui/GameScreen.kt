@@ -19,7 +19,11 @@ import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -28,10 +32,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
@@ -86,6 +93,7 @@ fun GameScreen(
             wordCount = gameUiState.currentWordCount,
             onKeyboardDone = { gameViewModel.checkUserGuess() },
             onUserGuessChanged = { gameViewModel.updateUserGuess(it) },
+            onReshuffleWord = { gameViewModel.reshuffleWord() },
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
@@ -145,6 +153,7 @@ fun GameLayout(
     wordCount: Int,
     onKeyboardDone: () -> Unit,
     onUserGuessChanged: (String) -> Unit,
+    onReshuffleWord: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val mediumPadding = dimensionResource(R.dimen.padding_medium)
@@ -158,16 +167,35 @@ fun GameLayout(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(mediumPadding)
         ) {
-            Text(
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .clip(shapes.medium)
-                    .background(colorScheme.surfaceTint)
-                    .padding(horizontal = 10.dp, vertical = 4.dp)
-                    .align(alignment = Alignment.End),
-                text = stringResource(R.string.word_count, wordCount),
-                style = typography.titleMedium,
-                color = colorScheme.onPrimary
-            )
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Min)
+            ) {
+                Button(
+                    modifier = Modifier
+                        .clip(shapes.medium)
+                        .background(colorScheme.surfaceTint)
+                        .fillMaxHeight(),
+                    onClick = onReshuffleWord
+                ) {
+                    Icon(imageVector = Icons.Filled.Refresh, contentDescription = null)
+                }
+                Text(
+                    modifier = Modifier
+                        .clip(shapes.medium)
+                        .background(colorScheme.surfaceTint)
+                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                        .align(Alignment.CenterVertically)
+                        .fillMaxHeight()
+                        .wrapContentHeight(align = Alignment.CenterVertically),
+                    text = stringResource(R.string.word_count, wordCount),
+                    style = typography.titleMedium,
+                    color = colorScheme.onPrimary
+                )
+            }
             Text(
                 text = currentScrambledWord,
                 style = typography.displayMedium

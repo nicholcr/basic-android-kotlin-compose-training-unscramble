@@ -52,6 +52,15 @@ class GameViewModel : ViewModel() {
         }
     }
 
+    fun reshuffleWord() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                isGuessedWordWrong = false,
+                currentScrambledWord = shuffleCurrentWord(currentWord),
+            )
+        }
+    }
+
     fun skipWord() {
         updateGameState(_uiState.value.score)
         updateUserGuess("")
