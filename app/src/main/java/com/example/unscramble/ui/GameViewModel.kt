@@ -22,7 +22,6 @@ class GameViewModel : ViewModel() {
         get() = _currentWord
 
     private var usedWords: MutableSet<String> = mutableSetOf()
-    val currentScrambledWord: String = ""
     var userGuess by mutableStateOf("")
         private set
 
